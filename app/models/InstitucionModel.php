@@ -1,0 +1,298 @@
+<?php
+namespace app\models;
+
+use \DataBase;
+use \Model;
+use \Exception;
+
+class InstitucionModel extends Model
+{
+    protected $table = "instituciones";
+    protected $primaryKey = "id";
+
+    // Propiedades completas del modelo
+    public $id;
+    public $nombre;
+    public $direccion;
+    public $ciudad;
+    public $provincia;
+    public $telefono;
+    public $email;
+    public $tipo;
+    public $sector;
+    public $activa;
+    public $created_at;
+    public $updated_at;
+
+    // Constantes para valores predefinidos
+    const TIPO_HOSPITAL = 'hospital';
+    const TIPO_CLINICA = 'clinica';
+    const TIPO_CENTRO_SALUD = 'centro_salud';
+    const TIPO_EDUCATIVA = 'educativa';
+    const TIPO_OTRO = 'otro';
+
+    const SECTOR_PUBLICO = 'publico';
+    const SECTOR_PRIVADO = 'privado';
+    const SECTOR_MIXTO = 'mixto';
+
+
+    public static function getInstitucionPorUsuarioId($userId): ?int
+    {
+        $db = Database::connection();
+        $stmt = $db->prepare("SELECT * FROM instituciones WHERE usuario_id=:usuario_id;");
+        $stmt->bindParam(':usuario_id', $userId);
+        $stmt->execute();
+
+        $institucion = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $institucion ? (int) $institucion['id'] : null;
+    }
+
+    /**
+     * Obtiene una institución por nombre
+     */
+
+
+
+
+
+    public static function findByName($nombre)
+    {
+        $sql = "SELECT * FROM instituciones WHERE nombre LIKE :nombre LIMIT 1";
+        $params = ["nombre" => "%$nombre%"];
+
+        $result = DataBase::query($sql, $params);
+
+        return !empty($result) ? (new static())->loadData($result[0]) : false;
+    }
+    public static function findById($id)
+    {
+        $sql = "SELECT * FROM instituciones WHERE id = :id LIMIT 1";
+        $params = ["id" => $id];
+
+        $result = DataBase::query($sql, $params);
+
+        return !empty($result) ? (new static())->loadData($result[0]) : false;
+    }
+
+
+
+    public static function getFamiliasConAsistentes($institucionId)
+    {
+        $sql = "
+        SELECT 
+            u.nombre AS nombre_tutor, 
+            p.nombre AS nombre_paciente,
+            u.apellido AS apellido_tutor, 
+            p.apellido AS apellido_paciente,
+            p.tipo_condicion AS condicion
+        FROM 
+            pacientes p
+        JOIN 
+            usuarios u ON p.usuario_id = u.id
+        WHERE 
+            p.institucion_id = :id
+        ORDER BY 
+            u.nombre
+    ";
+
+        $params = ["id" => $institucionId];
+
+        $result = DataBase::query($sql, $params);
+
+        return !empty($result) ? $result : false;
+    }
+    public static function getAcompanantesPorInstitucion($institucionId)
+    {
+        $sql = "
+        SELECT DISTINCT 
+            a.id, a.nombre, a.apellido, a.email
+        FROM 
+            pacientes p
+        JOIN 
+            acompanante a ON p.acompanante_id = a.id
+        WHERE 
+            p.institucion_id = :institucion_id
+        ORDER BY 
+            a.nombre, a.apellido
+    ";
+        $params = ['institucion_id' => $institucionId];
+        return DataBase::query($sql, $params);
+    }
+
+
+
+    /**
+     * Crea una nueva institución
+     */
+    public static function create($data)
+    {
+        try {
+            // Validación de campos obligatorios
+            $required = [
+                'nombre',
+                'direccion',
+                'ciudad',
+                'provincia',
+                'telefono',
+                'email',
+                'tipo',
+                'sector',
+                'usuario_id',
+                'rol'
+            ];
+
+            foreach ($required as $field) {
+                if (empty($data[$field]) && $data[$field] !== '0') {
+                    throw new Exception("Falta el campo obligatorio: {$field}");
+                }
+            }
+
+            // Validación de formato email
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                throw new Exception("Email inválido");
+            }
+
+            // Validación de tipo y sector
+            if (!in_array(strtolower($data['tipo']), ['educativa', 'sanitaria'])) {
+                throw new Exception("Tipo de institución inválido");
+            }
+
+            if (!in_array(strtolower($data['sector']), ['publica', 'privada'])) {
+                throw new Exception("Sector inválido");
+            }
+
+            // Verificar si el nombre ya existe
+            if (self::existeNombre($data['nombre'])) {
+                throw new Exception("Ya existe una institución con ese nombre");
+            }
+
+            $sql = "INSERT INTO instituciones 
+                (nombre, direccion, ciudad, provincia, telefono, email, 
+                 tipo, sector, activa, usuario_id) 
+                VALUES 
+                (:nombre, :direccion, :ciudad, :provincia, :telefono, :email,
+                 :tipo, :sector, :activa, :usuario_id)";
+
+            $params = [
+                'nombre' => $data['nombre'],
+                'direccion' => $data['direccion'],
+                'ciudad' => $data['ciudad'],
+                'provincia' => $data['provincia'],
+                'telefono' => $data['telefono'],
+                'email' => $data['email'],
+                'tipo' => strtolower($data['tipo']),
+                'sector' => strtolower($data['sector']),
+                'activa' => 1, // Por defecto se crea como activa
+                'usuario_id' => $data['usuario_id']
+            ];
+
+            $result = DataBase::execute($sql, $params);
+
+            if (!$result) {
+                throw new Exception("Error al ejecutar la consulta de inserción");
+            }
+
+            if (!self::actualizarRolUsuario($data['usuario_id'], $data['rol'])) {
+                throw new Exception("Error al actualizar rol de usuario");
+            }
+
+            return true;
+
+        } catch (\PDOException $ex) {
+            error_log("[InstitucionModel::create] PDOException: " . $ex->getMessage());
+
+            // Manejo específico de errores de duplicado
+            if ($ex->getCode() == 23000) {
+                return "El nombre o email ya están registrados";
+            }
+
+            return "Error de base de datos: " . $ex->getMessage();
+        } catch (Exception $ex) {
+            error_log("[InstitucionModel::create] Exception: " . $ex->getMessage());
+            return "Error: " . $ex->getMessage();
+        }
+    }
+
+    private static function actualizarRolUsuario($usuario_id, $rol)
+    {
+        $sql = "UPDATE usuarios SET rol_id = :rol WHERE id = :usuario_id";
+        $affectedRows = DataBase::execute($sql, [
+            'usuario_id' => $usuario_id,
+            'rol' => $rol
+        ]);
+
+        if ($affectedRows === false) {
+            error_log("[InstitucionModel::actualizarRolUsuario] Error al ejecutar la consulta");
+            return false;
+        }
+
+        if ($affectedRows === 0) {
+            error_log("[InstitucionModel::actualizarRolUsuario] No se actualizó ninguna fila. Usuario inexistente o rol igual.");
+            return true; // Consideramos éxito si no hubo cambios necesarios
+        }
+
+        return true;
+    }
+
+    public static function existeNombre($nombre)
+    {
+        $sql = "SELECT COUNT(*) AS cantidad FROM instituciones WHERE nombre = :nombre";
+        $params = ['nombre' => $nombre];
+        $result = DataBase::query($sql, $params);
+
+        if ($result && count($result) > 0) {
+            $row = $result[0];
+            return $row->cantidad; // <- Cambio hecho aquí
+        }
+
+        return false;
+    }
+
+
+
+
+    /**
+     * Obtiene todas las instituciones
+     */
+    public static function obtenerInstituciones()
+    {
+        $sql = "SELECT * FROM instituciones WHERE activa = 1 ORDER BY nombre";
+        return DataBase::query($sql);
+    }
+
+    /**
+     * Actualiza una institución
+     */
+    public function update(array $data): bool
+    {
+        // Filtramos solo los campos que existen en el modelo
+        $data = array_intersect_key($data, get_object_vars($this));
+
+        if (empty($data)) {
+            return false;
+        }
+
+        // Agregamos la fecha de actualización
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        // Construimos la consulta SQL
+        $sql = "UPDATE instituciones SET ";
+        $setParts = [];
+        $params = ['id' => $this->id];
+
+        foreach ($data as $field => $value) {
+            $setParts[] = "$field = :$field";
+            $params[$field] = $value;
+        }
+
+        $sql .= implode(', ', $setParts) . " WHERE id = :id";
+
+        // Ejecutamos la consulta
+        try {
+            return (bool) DataBase::query($sql, $params);
+        } catch (Exception $e) {
+            error_log("Error al actualizar institución: " . $e->getMessage());
+            return false;
+        }
+    }
+}

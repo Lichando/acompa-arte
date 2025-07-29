@@ -1,0 +1,226 @@
+.banner {
+    width: 100%;
+    height: 85vh;
+    background: url('https://blogger.googleusercontent.com/img/a/AVvXsEgnvTZd9iNy1JWHVfu6L0-yXPWn3AYPaMe4sUhWES1dARoGoLmDkZzx06LVt-6zdgSv-XGDfTSHsW_lpBM3r2KA_QE8gjnu10zXs50wFmheIQ90RK7iIGgMiFm7_7dGR4XvWrAskNSkGS9P-CDfQYAuYezH_jAi4clK7mCijFpLM0oaCxYYUi0k_e4qvw') center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* oscurece imagen para contraste */
+    z-index: 1;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.banner-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.banner-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.banner-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-banner {
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1em;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn1 {
+    background-color: #f6a736;
+    color: white;
+    border: none;
+}
+
+.btn1:hover {
+    background-color: #d98c2e;
+}
+
+.btn2 {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn2:hover {
+    background-color: white;
+    color: #444;
+}
+
+/*Sobre nosotros*/
+
+.nosotros {
+    padding: 70px 0;
+    background-color: #ffffff;
+    margin: 10px;
+}
+
+.nosotros-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.nosotros-texto {
+    flex: 1 1 400px;
+}
+
+.nosotros-texto h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.nosotros-texto p {
+    font-size: 1.05em;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.nosotros-image {
+    flex: 1 1 400px;
+    text-align: center;
+}
+
+.nosotros-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Servicios */
+.services {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.services h2 {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.service-card {
+    background-color: #ffffff;
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.service-card img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+.service-card h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.service-card p {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .banner-content h2 {
+        font-size: 1.8em;
+    }
+
+    .banner-content p {
+        font-size: 1em;
+    }
+
+    .banner-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-banner {
+        width: 80%;
+    }
+
+
+    .nosotros-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nosotros-texto,
+    .nosotros-image {
+        flex: 1 1 100%;
+    }
+
+    .nosotros-image img {
+        max-width: 90%;
+    }
+
+
+
+    .services h2 {
+        font-size: 1.8em;
+    }
+
+    .service-card {
+        padding: 25px 15px;
+    }
+
+    .service-card img {
+        width: 60px;
+        height: 60px;
+    }
+
+}
