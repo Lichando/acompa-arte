@@ -39,6 +39,15 @@
             transition: border-color 0.3s ease;
         }
 
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
         form input[type="text"]:focus,
         form input[type="email"]:focus,
         form input[type="password"]:focus {

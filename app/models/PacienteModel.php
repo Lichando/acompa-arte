@@ -130,7 +130,7 @@ class PacienteModel extends Model
         return DataBase::query($sql, $params);
     }
 
-    public static function getAcompanantesPorCondicion( $tipoCondicion)
+    public static function getAcompanantesPorCondicion($tipoCondicion)
     {
         $sql = "
         SELECT 
@@ -265,6 +265,12 @@ class PacienteModel extends Model
     {
         $sql = "SELECT COUNT(*) as count FROM pacientes WHERE dni = :dni";
         $result = DataBase::query($sql, ['dni' => $dni]);
-        return $result[0]['count'] > 0;
+
+        // Solución rápida - funciona para ambos casos (array u objeto)
+        if (is_object($result[0])) {
+            return $result[0]->count > 0;  // Acceso como objeto
+        } else {
+            return $result[0]['count'] > 0; // Acceso como array
+        }
     }
 }

@@ -137,7 +137,7 @@ class AcompananteModel extends Model
             }
 
             $sql = "INSERT INTO acompanantes 
-                (usuario_id, dni, telefono,tipo_condicion,) 
+                (usuario_id, dni, telefono,tipo_condicion) 
                 VALUES 
                 (:usuario_id, :dni, :telefono,:tipo_condicion)";
 
@@ -200,7 +200,13 @@ class AcompananteModel extends Model
     {
         $sql = "SELECT COUNT(*) as count FROM acompanantes WHERE dni = :dni";
         $result = DataBase::query($sql, ['dni' => $dni]);
-        return $result[0]['count'] > 0;
+
+        // Solución rápida - funciona para ambos casos (array u objeto)
+        if (is_object($result[0])) {
+            return $result[0]->count > 0;  // Acceso como objeto
+        } else {
+            return $result[0]['count'] > 0; // Acceso como array
+        }
     }
 
 

@@ -256,7 +256,7 @@ class InstitucionModel extends Model
      */
     public static function obtenerInstituciones()
     {
-        $sql = "SELECT * FROM instituciones WHERE activa = 1 ORDER BY nombre";
+        $sql = "SELECT * FROM instituciones WHERE activo = 1 ORDER BY nombre";
         return DataBase::query($sql);
     }
 

@@ -30,7 +30,7 @@ class RegistroController extends Controller
                 'email' => trim($_POST['email'] ?? ''),
                 'tipo' => strtolower(trim($_POST['tipo'] ?? '')),
                 'sector' => strtolower(trim($_POST['sector'] ?? '')),
-                'activa' => 1,
+                'activo' => 1,
                 'usuario_id' => $_SESSION['usuario_id'],
                 'rol' => 4
             ];
