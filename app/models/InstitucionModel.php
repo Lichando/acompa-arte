@@ -20,7 +20,7 @@ class InstitucionModel extends Model
     public $email;
     public $tipo;
     public $sector;
-    public $activa;
+    public $activo;
     public $created_at;
     public $updated_at;
 
@@ -168,10 +168,10 @@ class InstitucionModel extends Model
 
             $sql = "INSERT INTO instituciones 
                 (nombre, direccion, ciudad, provincia, telefono, email, 
-                 tipo, sector, activa, usuario_id) 
+                 tipo, sector, activo, usuario_id) 
                 VALUES 
                 (:nombre, :direccion, :ciudad, :provincia, :telefono, :email,
-                 :tipo, :sector, :activa, :usuario_id)";
+                 :tipo, :sector, :activo, :usuario_id)";
 
             $params = [
                 'nombre' => $data['nombre'],
@@ -182,7 +182,7 @@ class InstitucionModel extends Model
                 'email' => $data['email'],
                 'tipo' => strtolower($data['tipo']),
                 'sector' => strtolower($data['sector']),
-                'activa' => 1, // Por defecto se crea como activa
+                'activo' => 1, // Por defecto se crea como activo
                 'usuario_id' => $data['usuario_id']
             ];
 

@@ -41,7 +41,7 @@ class SessionController extends Controller
      */
     public static function getRoleId(): int
     {
-        return $_SESSION['usuario_rol'] ?? self::ROLE_GUEST;
+        return $_SESSION['usuario_rol'] ?? self::ROLE_USER;
     }
 
     /**

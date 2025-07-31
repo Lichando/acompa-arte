@@ -13,6 +13,16 @@ class RegistroController extends Controller
 {
     public function actionInstitucion()
     {
+            // Validación de sesión
+        if (!SessionController::isLoggedIn()) {
+            return Response::redirect("../cuentas/login");  // Ruta absoluta
+        }
+
+        // Solo permitir acceso si el rol es USER
+        if (SessionController::getRoleId() !== SessionController::ROLE_USER) {
+            (new CuentasController())->redirectByRole(); // redirige según el rol automáticamente
+        }
+
         $head = SiteController::head();
         $header = SiteController::header();
         $footer = SiteController::footer();
@@ -74,6 +84,7 @@ class RegistroController extends Controller
                 $resultado = InstitucionModel::create($data);
 
                 if ($resultado === true) {
+                    
                     header("Location: ../institucion/dashboard");
                     exit;
                 } else {
@@ -101,6 +112,16 @@ class RegistroController extends Controller
 
     public function actionAcompanante()
     {
+            // Validación de sesión
+        if (!SessionController::isLoggedIn()) {
+            return Response::redirect("../cuentas/login");  // Ruta absoluta
+        }
+
+        // Solo permitir acceso si el rol es USER
+        if (SessionController::getRoleId() !== SessionController::ROLE_USER) {
+            (new CuentasController())->redirectByRole(); // redirige según el rol automáticamente
+        }
+
         $head = SiteController::head();
         $header = SiteController::header();
         $footer = SiteController::footer();
@@ -140,6 +161,7 @@ class RegistroController extends Controller
                     $resultado = AcompananteModel::create($data);
 
                     if ($resultado === true) {
+                        
                         header("Location: ../acompanante/dashboard");
                         exit;
                     } else {
@@ -167,6 +189,16 @@ class RegistroController extends Controller
 
     public function actionPaciente()
     {
+        // Validación de sesión
+        if (!SessionController::isLoggedIn()) {
+            return Response::redirect("../cuentas/login");  // Ruta absoluta
+        }
+
+        // Solo permitir acceso si el rol es USER
+        if (SessionController::getRoleId() !== SessionController::ROLE_USER) {
+            (new CuentasController())->redirectByRole(); // redirige según el rol automáticamente
+        }
+
         $head = SiteController::head();
         $header = SiteController::header();
         $footer = SiteController::footer();
@@ -247,6 +279,7 @@ class RegistroController extends Controller
                 $resultado = PacienteModel::create($data);
 
                 if ($resultado === true) {
+                    
                     header("Location: ../paciente/dashboard");
                     exit;
                 } else {

@@ -36,7 +36,6 @@ class UsuarioController extends Controller
             ]
         );
     }
-
     public function actionLogout()
     {
         SessionController::logout();  // Limpia toda la sesión

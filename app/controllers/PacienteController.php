@@ -16,22 +16,18 @@ class PacienteController extends Controller
         if (!SessionController::isLoggedIn()) {
             return Response::redirect("../cuentas/login");
         }
-        // Solo permitir acceso si el rol es USER
+        // Solo permitir acceso si el rol es PACIENTE
         if (SessionController::getRoleId() !== SessionController::ROLE_PACIENTE) {
             (new CuentasController())->redirectByRole(); // redirige según el rol automáticamente
         }
 
         $usuario_id = $_SESSION['usuario_id'];
 
-        // Supongamos que tenés este método para obtener datos del paciente
+        // método para obtener datos del paciente
         $paciente = PacienteModel::findByUserId($usuario_id);
 
-        // Historial (ejemplo)
-$asistenteporcon = PacienteModel::getAcompanantesPorCondicion($paciente->tipo_condicion);
 
-
-        // Seguimiento (ejemplo)
-        $seguimiento = SeguimientoModel::obtenerPorPaciente($paciente->id);
+        $asistenteporcon = PacienteModel::getAcompanantesPorCondicion($paciente->tipo_condicion);
 
         $head = SiteController::head();
         $header = SiteController::header();
@@ -47,7 +43,6 @@ $asistenteporcon = PacienteModel::getAcompanantesPorCondicion($paciente->tipo_co
                 "footer" => $footer,
                 "paciente" => $paciente,
                 "asistenteporcon" => $asistenteporcon,
-                "seguimiento" => $seguimiento
             ]
         );
     }

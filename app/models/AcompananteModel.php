@@ -215,7 +215,7 @@ class AcompananteModel extends Model
      */
     public static function MisInstituciones()
     {
-        $sql = "SELECT * FROM instituciones WHERE activa = 1 ORDER BY nombre";
+        $sql = "SELECT * FROM instituciones WHERE activo = 1 ORDER BY nombre";
         return DataBase::query($sql);
     }
     public static function update($usuarioId, $data)
