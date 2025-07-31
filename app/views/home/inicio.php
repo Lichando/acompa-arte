@@ -68,6 +68,27 @@
 	</section>
 
 	<?= $footer ?>
+	    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.acomp-header-nav-links');
+
+            menuToggle.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+                menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Cerrar menú al hacer clic en un enlace (para móviles)
+            document.querySelectorAll('.acomp-header-nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

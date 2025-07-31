@@ -2,29 +2,67 @@
 @import "header.css";
 @import "footer.css";
 @import "inicio.css";
+@import "somos.css";
 @import "dashboard.css";
-*{
+@import "dashboard-admin.css";
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.hide{
+
+.hide {
     display: none;
 }
 
-body{
-	font-size: 16px;
+body {
+    font-size: 16px;
     font-family: 'Oswald', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Esto es clave para el sticky footer */
 }
-b{
+
+b {
     font-weight: bold;
 }
-@-ms-viewport{
-  width: device-width;
+
+@-ms-viewport {
+    width: device-width;
+}
+
+/* Header siempre arriba */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    /* Asegura que el contenido no se vea detrás */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Opcional: sombra para separación visual */
+}
+
+/* Contenido principal que crece para empujar el footer abajo */
+main {
+    flex: 1;
+    /* Esto hace que el contenido ocupe todo el espacio disponible */
+    padding: 20px 0;
+    /* Espaciado opcional */
+}
+
+/* Footer siempre abajo */
+footer {
+    background: #f8f9fa;
+    /* Color de fondo opcional */
+    padding: 20px 0;
+    margin-top: auto;
+    /* Ayuda a mantener el footer abajo */
 }
 
 @media only screen and (max-width: 1366px) {
-    body{
+    body {
         font-size: 14px !important;
     }
 }

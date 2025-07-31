@@ -1,12 +1,15 @@
 /* Header */
-.header {
+.acomp-header {
   background-color: #ffffff;
   border-bottom: 1px solid #eaeaea;
   padding: 15px 0;
   font-family: 'Segoe UI', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.header .container {
+.acomp-header-container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
@@ -19,52 +22,86 @@
   font-size: 1.8em;
   color: #2a2a2a;
   font-weight: 600;
+  text-decoration: none;
 }
 
-.nav-links {
+.acomp-header-nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links a {
+.acomp-header-nav-links a {
   text-decoration: none;
   color: #444;
   font-size: 1em;
   transition: all 0.2s ease;
+  font-weight: 500;
 }
 
-.nav-links a:hover {
-  color: #f6a736;
+.acomp-header-nav-links a:hover
+ {
+ color: #0c5cf0;
 }
 
-.btn-inicio1 {
+.acomp-header-btn-inicio1 {
   padding: 8px 16px;
   border: 1px solid #ccc;
   border-radius: 25px;
   background-color: #f9f9f9;
   color: #444;
   transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
 }
 
-.btn-inicio1:hover {
-  background-color: #f6a736;
+.acomp-header-btn-inicio1:hover {
+  background-color: #ffffff;
   color: white;
-  border-color: #f6a736;
+  border-color: #2400f3;
+}
+
+/* Menú hamburguesa para móvil */
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 1.5em;
 }
 
 /* Responsive Header */
 @media (max-width: 768px) {
-  .header .container {
-    flex-direction: column;
-    align-items: flex-start;
+  .acomp-header-container {
+    flex-direction: row;
+    align-items: center;
   }
 
-  .nav-links {
+  .menu-toggle {
+    display: block;
+  }
+
+  .acomp-header-nav-links {
+    display: none;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 10px;
+    width: 100%;
+    background-color: white;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    padding: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  }
+
+  .acomp-header-nav-links.active {
+    display: flex;
+  }
+
+  .acomp-header-nav-links li {
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
   }
 }

@@ -1,0 +1,66 @@
+/* Estilos generales de la sección */
+.somos-section {
+    font-family: 'Arial', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Contenedores */
+.somos-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+.somos-title {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.somos-subtitle {
+    color: #2980b9;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+}
+
+/* Texto */
+.somos-text {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+/* Efectos hover para interactividad */
+.somos-container:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .somos-section {
+        padding: 1rem;
+    }
+    
+    .somos-container {
+        padding: 1.5rem;
+    }
+    
+    .somos-title {
+        font-size: 2rem;
+    }
+    
+    .somos-subtitle {
+        font-size: 1.5rem;
+    }
+}

@@ -108,7 +108,7 @@
             .login-form {
                 padding: 20px;
             }
-            
+
             .login-title {
                 font-size: 1.5rem;
             }
@@ -118,7 +118,7 @@
 
 <body class="login-body">
     <?= $header ?>
-    
+
     <div class="login-container">
         <h2 class="login-title">Iniciar Sesión</h2>
 
@@ -134,9 +134,8 @@
             <!-- Email -->
             <div class="login-form-group">
                 <label class="login-label" for="email">Email</label>
-                <input class="login-input <?= !empty($errors['email']) ? 'login-input-error' : '' ?>" 
-                       type="email" name="email" id="email" 
-                       value="<?= htmlspecialchars($old['email'] ?? '') ?>" >
+                <input class="login-input <?= !empty($errors['email']) ? 'login-input-error' : '' ?>" type="email"
+                    name="email" id="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>">
                 <?php if (!empty($errors['email'])): ?>
                     <div class="login-error-message"><?= $errors['email'] ?></div>
                 <?php endif; ?>
@@ -145,8 +144,8 @@
             <!-- Contraseña -->
             <div class="login-form-group">
                 <label class="login-label" for="contrasena">Contraseña</label>
-                <input class="login-input <?= !empty($errors['contrasena']) ? 'login-input-error' : '' ?>" 
-                       type="password" name="contrasena" id="contrasena" >
+                <input class="login-input <?= !empty($errors['contrasena']) ? 'login-input-error' : '' ?>"
+                    type="password" name="contrasena" id="contrasena">
                 <?php if (!empty($errors['contrasena'])): ?>
                     <div class="login-error-message"><?= $errors['contrasena'] ?></div>
                 <?php endif; ?>
@@ -163,6 +162,27 @@
     </div>
 
     <?= $footer ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.acomp-header-nav-links');
+
+            menuToggle.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+                menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Cerrar menú al hacer clic en un enlace (para móviles)
+            document.querySelectorAll('.acomp-header-nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

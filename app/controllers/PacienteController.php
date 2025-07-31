@@ -27,7 +27,8 @@ class PacienteController extends Controller
         $paciente = PacienteModel::findByUserId($usuario_id);
 
         // Historial (ejemplo)
-        $historial = HistorialModel::obtenerPorPaciente($paciente->id);
+$asistenteporcon = PacienteModel::getAcompanantesPorCondicion($paciente->tipo_condicion);
+
 
         // Seguimiento (ejemplo)
         $seguimiento = SeguimientoModel::obtenerPorPaciente($paciente->id);
@@ -45,7 +46,7 @@ class PacienteController extends Controller
                 "header" => $header,
                 "footer" => $footer,
                 "paciente" => $paciente,
-                "historial" => $historial,
+                "asistenteporcon" => $asistenteporcon,
                 "seguimiento" => $seguimiento
             ]
         );

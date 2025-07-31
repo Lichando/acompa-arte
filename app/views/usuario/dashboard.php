@@ -14,7 +14,7 @@
             --dark: #343a40;
             --border: #dee2e6;
         }
-        
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -132,11 +132,11 @@
             .registration-options {
                 grid-template-columns: 1fr;
             }
-            
+
             .welcome-title {
                 font-size: 24px;
             }
-            
+
             .registration-container {
                 padding: 30px 15px;
             }
@@ -161,7 +161,7 @@
                 </div>
                 <h3 class="card-title">Institución</h3>
                 <p class="card-description">
-                    Regístrate como institución médica o terapéutica para gestionar profesionales, 
+                    Regístrate como institución médica o terapéutica para gestionar profesionales,
                     pacientes y acompañantes en nuestro sistema.
                 </p>
                 <a href="../registro/institucion" class="btn-register">Registrar Institución</a>
@@ -174,7 +174,7 @@
                 </div>
                 <h3 class="card-title">Acompañante Terapéutico</h3>
                 <p class="card-description">
-                    Regístrate como profesional para ofrecer tus servicios de acompañamiento 
+                    Regístrate como profesional para ofrecer tus servicios de acompañamiento
                     terapéutico a pacientes e instituciones.
                 </p>
                 <a href="../registro/acompanante" class="btn-register">Registrar Acompañante</a>
@@ -187,7 +187,7 @@
                 </div>
                 <h3 class="card-title">Familiar o Tutor</h3>
                 <p class="card-description">
-                    Regístrate como familiar o tutor de un paciente para gestionar sus acompañantes 
+                    Regístrate como familiar o tutor de un paciente para gestionar sus acompañantes
                     terapéuticos y tratamiento.
                 </p>
                 <a href="../registro/paciente" class="btn-register">Registrar Familiar</a>
@@ -198,6 +198,27 @@
 
 
     <?= $footer ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.acomp-header-nav-links');
+
+            menuToggle.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+                menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Cerrar menú al hacer clic en un enlace (para móviles)
+            document.querySelectorAll('.acomp-header-nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

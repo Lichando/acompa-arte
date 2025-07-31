@@ -35,6 +35,7 @@ class AdminController extends Controller
         $head = SiteController::head();
         $header = SiteController::header();
         $footer = SiteController::footer();
+    
 
         return Response::render(
             $this->viewDir(__NAMESPACE__),
@@ -51,7 +52,7 @@ class AdminController extends Controller
                 "total_acompanantes_activos" => $countAA,
                 "instituciones" => $ListIns,
                 "pacientes" => $ListPa,
-                "acompanantes" => $ListAcom
+                "acompanantes" => $ListAcom,
 
             ]
         );

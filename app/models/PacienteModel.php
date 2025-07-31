@@ -105,6 +105,57 @@ class PacienteModel extends Model
         return DataBase::query($sql, $params);
     }
 
+    public static function getPacientesConAcompanantes($institucionId)
+    {
+        $sql = "
+       SELECT 
+            a.id,
+        ua.nombre AS acompanante_nombre,
+        ua.apellido AS acompanante_apellido,
+            a.dni AS acompanante_dni,
+            p.nombre AS paciente_nombre,
+            p.apellido AS paciente_apellido,
+            u.nombre AS nombre_tutor,
+            u.apellido AS apellido_tutor
+        FROM pacientes p
+        LEFT JOIN acompanantes a ON p.acompanante_id = a.id
+        LEFT JOIN usuarios ua ON a.usuario_id = ua.id 
+        LEFT JOIN usuarios u ON p.usuario_id = u.id
+        WHERE p.institucion_id = :institucion_id
+
+    ";
+
+        $params = ['institucion_id' => $institucionId];
+
+        return DataBase::query($sql, $params);
+    }
+
+    public static function getAcompanantesPorCondicion( $tipoCondicion)
+    {
+        $sql = "
+        SELECT 
+            a.id AS acompanante_id,
+            ua.nombre AS acompanante_nombre,
+            ua.apellido AS acompanante_apellido,
+            a.dni AS acompanante_dni,
+            a.tipo_condicion AS acompanante_condicion
+        FROM acompanantes a
+        INNER JOIN usuarios ua ON a.usuario_id = ua.id
+        WHERE a.disponible = 1
+          AND a.tipo_condicion = :tipo_condicion
+    ";
+
+        $params = [
+            'tipo_condicion' => $tipoCondicion,
+        ];
+
+        return DataBase::query($sql, $params);
+    }
+
+
+
+
+
 
 
 

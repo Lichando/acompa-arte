@@ -25,8 +25,8 @@ class SiteController extends Controller
 
 		// Determinar el enlace de autenticación
 		$authLink = SessionController::isLoggedIn()
-			? '<li><a href="' . self::$ruta . 'cuentas/logout" class="btn-inicio1">Cerrar sesión</a></li>'
-			: '<li><a href="' . self::$ruta . 'cuentas/login" class="btn-inicio1">Iniciar sesión</a></li>';
+			? '<li><a href="' . self::$ruta . 'cuentas/logout" class="acomp-header-btn-inicio1">Cerrar sesión</a></li>'
+			: '<li><a href="' . self::$ruta . 'cuentas/login" class="acomp-header-btn-inicio1">Iniciar sesión</a></li>';
 
 		// Reemplazar los placeholders
 		$header = str_replace(
@@ -37,6 +37,11 @@ class SiteController extends Controller
 
 		return $header;
 	}
+
+	
+
+
+
 	public static function footer()
 	{
 		static::path();

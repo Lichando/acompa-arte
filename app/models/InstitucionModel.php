@@ -263,36 +263,44 @@ class InstitucionModel extends Model
     /**
      * Actualiza una institución
      */
-    public function update(array $data): bool
+     public static function update($institucionId, $data)
     {
-        // Filtramos solo los campos que existen en el modelo
-        $data = array_intersect_key($data, get_object_vars($this));
+        $db = Database::connection();
 
-        if (empty($data)) {
-            return false;
-        }
-
-        // Agregamos la fecha de actualización
-        $data['updated_at'] = date('Y-m-d H:i:s');
-
-        // Construimos la consulta SQL
-        $sql = "UPDATE instituciones SET ";
-        $setParts = [];
-        $params = ['id' => $this->id];
-
-        foreach ($data as $field => $value) {
-            $setParts[] = "$field = :$field";
-            $params[$field] = $value;
-        }
-
-        $sql .= implode(', ', $setParts) . " WHERE id = :id";
-
-        // Ejecutamos la consulta
         try {
-            return (bool) DataBase::query($sql, $params);
-        } catch (Exception $e) {
-            error_log("Error al actualizar institución: " . $e->getMessage());
-            return false;
+            // Actualiza acompañante
+            $stmt = $db->prepare("UPDATE instituciones SET nombre = :nombre, direccion = :direccion, telefono = :telefono WHERE id = :institucionId");
+            $stmt->execute([
+                ':nombre' => $data['nombre'],
+                ':direccion' => $data['direccion'],
+                ':telefono' => $data['telefono'],
+                ':institucionId' => $institucionId
+            ]);
+
+            return true;
+        } catch (\PDOException $e) {
+            return "Error: " . $e->getMessage();
         }
     }
+
+    public static function darBaja($usuario_id,$institucionId)
+    {
+        $db = Database::connection();
+
+        try {
+            // Desactivar acompañante
+            $stmt1 = $db->prepare("UPDATE instituciones SET activo=0 WHERE id = :institucion_id");
+            $stmt1->execute([':institucion_id' => $institucionId]);
+
+            // Cambiar el rol a usuario común
+            $stmt2 = $db->prepare("UPDATE usuarios SET rol_id = 1 WHERE id = :usuario_id");
+            $stmt2->execute([':usuario_id' => $usuario_id]);
+
+            return true;
+        } catch (Exception $e) {
+            return "Error al dar de baja: " . $e->getMessage();
+        }
+    }
+
+
 }

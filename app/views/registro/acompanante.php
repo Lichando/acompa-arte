@@ -97,36 +97,36 @@
             <label>Teléfono</label>
             <input type="text" name="telefono">
 
-              <div class="form-group full-width">
-                    <label>Tipo de Condición *</label>
-                    <select name="tipo_condicion" class="form-control" >
-                        <option value="">Seleccione el tipo de condición...</option>
-                        <option value="TEA" <?= ($oldInput['tipo_condicion'] ?? '') == 'TEA' ? 'selected' : '' ?>>
-                            TEA (Trastorno del Espectro Autista)
-                        </option>
-                        <option value="TGD" <?= ($oldInput['tipo_condicion'] ?? '') == 'TGD' ? 'selected' : '' ?>>
-                            TGD (Trastorno Generalizado del Desarrollo)
-                        </option>
-                        <option value="Discapacidad_Intelectual" <?= ($oldInput['tipo_condicion'] ?? '') == 'Discapacidad_Intelectual' ? 'selected' : '' ?>>
-                            Discapacidad Intelectual
-                        </option>
-                        <option value="TDAH" <?= ($oldInput['tipo_condicion'] ?? '') == 'TDAH' ? 'selected' : '' ?>>
-                            TDAH (Trastorno por Déficit de Atención e Hiperactividad)
-                        </option>
-                        <option value="Psicosis_Infantil" <?= ($oldInput['tipo_condicion'] ?? '') == 'Psicosis_Infantil' ? 'selected' : '' ?>>
-                            Psicosis Infantil
-                        </option>
-                        <option value="Parálisis_Cerebral" <?= ($oldInput['tipo_condicion'] ?? '') == 'Parálisis_Cerebral' ? 'selected' : '' ?>>
-                            Parálisis Cerebral
-                        </option>
-                        <option value="Sindrome_Down" <?= ($oldInput['tipo_condicion'] ?? '') == 'Sindrome_Down' ? 'selected' : '' ?>>
-                            Síndrome de Down
-                        </option>
-                        <option value="Otra" <?= ($oldInput['tipo_condicion'] ?? '') == 'Otra' ? 'selected' : '' ?>>
-                            Otra condición no especificada
-                        </option>
-                    </select>
-                </div>
+            <div class="form-group full-width">
+                <label>Tipo de Condición *</label>
+                <select name="tipo_condicion" class="form-control">
+                    <option value="">Seleccione el tipo de condición...</option>
+                    <option value="TEA" <?= ($oldInput['tipo_condicion'] ?? '') == 'TEA' ? 'selected' : '' ?>>
+                        TEA (Trastorno del Espectro Autista)
+                    </option>
+                    <option value="TGD" <?= ($oldInput['tipo_condicion'] ?? '') == 'TGD' ? 'selected' : '' ?>>
+                        TGD (Trastorno Generalizado del Desarrollo)
+                    </option>
+                    <option value="Discapacidad_Intelectual" <?= ($oldInput['tipo_condicion'] ?? '') == 'Discapacidad_Intelectual' ? 'selected' : '' ?>>
+                        Discapacidad Intelectual
+                    </option>
+                    <option value="TDAH" <?= ($oldInput['tipo_condicion'] ?? '') == 'TDAH' ? 'selected' : '' ?>>
+                        TDAH (Trastorno por Déficit de Atención e Hiperactividad)
+                    </option>
+                    <option value="Psicosis_Infantil" <?= ($oldInput['tipo_condicion'] ?? '') == 'Psicosis_Infantil' ? 'selected' : '' ?>>
+                        Psicosis Infantil
+                    </option>
+                    <option value="Parálisis_Cerebral" <?= ($oldInput['tipo_condicion'] ?? '') == 'Parálisis_Cerebral' ? 'selected' : '' ?>>
+                        Parálisis Cerebral
+                    </option>
+                    <option value="Sindrome_Down" <?= ($oldInput['tipo_condicion'] ?? '') == 'Sindrome_Down' ? 'selected' : '' ?>>
+                        Síndrome de Down
+                    </option>
+                    <option value="Otra" <?= ($oldInput['tipo_condicion'] ?? '') == 'Otra' ? 'selected' : '' ?>>
+                        Otra condición no especificada
+                    </option>
+                </select>
+            </div>
 
             <button type="submit" class="btn-register">Registrar</button>
 
@@ -134,6 +134,28 @@
     </div>
 
     <?= $footer ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.acomp-header-nav-links');
+
+            menuToggle.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+                menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Cerrar menú al hacer clic en un enlace (para móviles)
+            document.querySelectorAll('.acomp-header-nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

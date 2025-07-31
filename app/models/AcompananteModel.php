@@ -212,56 +212,53 @@ class AcompananteModel extends Model
         $sql = "SELECT * FROM instituciones WHERE activa = 1 ORDER BY nombre";
         return DataBase::query($sql);
     }
-
     public static function update($usuarioId, $data)
     {
         $db = Database::connection();
 
-        // 1. Actualizar datos en tabla usuarios
-        $stmtUsuario = $db->prepare("UPDATE usuarios SET 
-                               nombre = ?, 
-                               apellido = ?, 
-                               updated_at = NOW() 
-                               WHERE id = ?");
-        $usuarioActualizado = $stmtUsuario->execute([
-            $data['nombre'],
-            $data['apellido'],
-            $usuarioId
-        ]);
+        try {
+            // Actualiza acompañante
+            $stmt = $db->prepare("UPDATE acompanantes SET dni = :dni, telefono = :telefono WHERE usuario_id = :usuario_id");
+            $stmt->execute([
+                ':dni' => $data['dni'],
+                ':telefono' => $data['telefono'],
+                ':usuario_id' => $usuarioId
+            ]);
 
-        // 2. Actualizar datos en tabla acompañantes
-        $stmtAcompanante = $db->prepare("UPDATE acompanantes SET 
-                                   dni = ?, 
-                                   telefono = ?, 
-                                   updated_at = NOW() 
-                                   WHERE usuario_id = ?");
-        $acompananteActualizado = $stmtAcompanante->execute([
-            $data['dni'],
-            $data['telefono'],
-            $usuarioId
-        ]);
+            // Actualiza usuarios
+            $stmt2 = $db->prepare("UPDATE usuarios SET nombre = :nombre, apellido = :apellido WHERE id = :usuario_id");
+            $stmt2->execute([
+                ':nombre' => $data['nombre'],
+                ':apellido' => $data['apellido'],
+                ':usuario_id' => $usuarioId
+            ]);
 
-        return $usuarioActualizado && $acompananteActualizado;
+            return true;
+        } catch (\PDOException $e) {
+            return "Error: " . $e->getMessage();
+        }
     }
 
-    public static function solicitarBaja($usuarioId): bool
+
+    public static function darBaja($usuario_id)
     {
         $db = Database::connection();
 
-        // 1. Cambiar rol a 1 (usuario básico) en tabla usuarios
-        $stmtUsuario = $db->prepare("UPDATE usuarios SET 
-                               rol = 1, 
-                               updated_at = NOW() 
-                               WHERE id = ?");
-        $usuarioActualizado = $stmtUsuario->execute([$usuarioId]);
+        try {
+            // Desactivar acompañante
+            $stmt1 = $db->prepare("UPDATE acompanantes SET activo=0 WHERE usuario_id = :usuario_id");
+            $stmt1->execute([':usuario_id' => $usuario_id]);
 
-        // 2. Marcar como inactivo en tabla acompañantes
-        $stmtAcompanante = $db->prepare("UPDATE acompanantes SET 
-                                   activo = 0, 
-                                   updated_at = NOW() 
-                                   WHERE usuario_id = ?");
-        $acompananteActualizado = $stmtAcompanante->execute([$usuarioId]);
+            // Cambiar el rol a usuario común
+            $stmt2 = $db->prepare("UPDATE usuarios SET rol_id = 1 WHERE id = :usuario_id");
+            $stmt2->execute([':usuario_id' => $usuario_id]);
 
-        return $usuarioActualizado && $acompananteActualizado;
+            return true;
+        } catch (Exception $e) {
+            return "Error al dar de baja: " . $e->getMessage();
+        }
     }
+
+
+
 }
